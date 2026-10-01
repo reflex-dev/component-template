@@ -1,0 +1,64 @@
+[project]
+name = "reflex-component-template"
+dynamic = ["version"]
+description = "A Reflex component wrapping a React library."
+readme = "README.md"
+license = "Apache-2.0"
+requires-python = ">=3.10"
+authors = [{ name = "Your Name", email = "you@example.com" }]
+keywords = ["reflex", "reflex-component"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+]
+dependencies = ["reflex>=0.9.12"]
+
+[project.urls]
+Repository = "https://github.com/your-org/reflex-component-template"
+
+[dependency-groups]
+dev = [
+    "pre-commit>=4",
+    "pyright>=1.1.400",
+    "pytest>=8",
+    "ruff>=0.12",
+]
+
+[build-system]
+requires = ["hatchling", "uv-dynamic-versioning", "hatch-reflex-pyi"]
+build-backend = "hatchling.build"
+
+[tool.hatch.version]
+# The version comes from the git tag (`v0.1.0` builds 0.1.0).
+source = "uv-dynamic-versioning"
+
+[tool.uv-dynamic-versioning]
+fallback-version = "0.0.0"
+
+[tool.hatch.build]
+# The .pyi stubs are generated at build time and are not committed.
+artifacts = ["/src/**/*.pyi"]
+
+[tool.hatch.build.targets.sdist]
+exclude = ["/demo", "/.github"]
+
+[tool.hatch.build.hooks.reflex-pyi]
+dependencies = ["ruff", "reflex>=0.9.12"]
+
+[tool.ruff]
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["B", "D", "E", "F", "I", "UP", "W"]
+ignore = ["D203", "D213"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["D"]
+"demo/**" = ["D"]
+"scripts/**" = ["D"]
+
+[tool.pyright]
+include = ["src", "tests"]
+pythonVersion = "3.10"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
